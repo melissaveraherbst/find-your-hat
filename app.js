@@ -1,9 +1,10 @@
 // The characters object defines the characters used in the game, such as the hat, hole, field character, and path character. These characters are styled using ANSI escape codes to add color.
 let characters = {
+  player: "\u001b[33m" + "#" + "\u001b[0m",
   hat: "\u001b[36m" + "^" + "\u001b[0m",
   hole: "O",
   fieldCharacter: "░",
-  pathCharacter: "\u001b[35m" + "*" + "\u001b[0m",
+  path: "\u001b[35m" + "*" + "\u001b[0m",
 };
 
 class Field {
@@ -47,7 +48,8 @@ class Field {
     // add the start (top left corner)
     let startX = 0;
     let startY = 0;
-    fieldArray[startY][startX] = characters["pathCharacter"];
+    fieldArray[startY][startX] = characters["player"];
+    // fieldArray[startY][startX] = characters["path"];
 
     return fieldArray;
   };
@@ -89,22 +91,26 @@ class Field {
 
     // helper function to test the player's current position and update the field accordingly
     let testUserInput = (y, x, fieldArray) => {
-      let currentEl = fieldArray[y][x];
+      let newElement = fieldArray[y][x];
 
-      if (currentEl === characters["hat"]) {
+      if (newElement === characters["hat"]) {
         process.stdout.write("\n" + "\u001b[36m" + "Congratulations! You found your hat!" + "\u001b[0m" + "\n");
         process.exit();
-      } else if (currentEl === characters["hole"]) {
+      } else if (newElement === characters["hole"]) {
         process.stdout.write("\n" + "\u001b[31m" + "Oh nooooo! You fell into a hole! Game Over." + "\u001b[0m" + "\n");
         process.exit();
       } else {
-        fieldArray[y][x] = characters["pathCharacter"];
+        fieldArray[y][x] = characters["player"];
         this.printField(fieldArray);
       }
     };
 
     // the following code updates the game field according to the user's input
     // note: before we move the player, we first check that the player is moving within the field range
+
+    // record the current player before updating it to the new position. This is so that the current player poistion can be marked with a "path character" and the new player position will be marked with a "player character"
+    this.field[this.charYPosition][this.charXPosition] = characters["path"]
+    
     // move player position to the left
     if (userInput === "a") {
       if (this.charXPosition <= 0) {
@@ -162,6 +168,7 @@ class Field {
 
   // --------------------------------------------------
   printField = (fieldArray) => {
+    console.clear();
     for (let i = 0; i < fieldArray.length; i++) {
       console.log(fieldArray[i].join(" "));
     }
