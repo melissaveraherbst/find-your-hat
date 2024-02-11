@@ -68,8 +68,8 @@ class Field {
 
     process.stdout.write(`\nCan you find your hat?\n\n`);
     this.printField(this.field);
-    process.stdout.write(messages.legendMessage);
-    process.stdout.write(messages.instructionsMessage);
+    process.stdout.write(messages["legendMessage"]);
+    process.stdout.write(messages["instructionsMessage"]);
 
     this.getUserData();
   };
@@ -100,8 +100,8 @@ class Field {
       return;
     }
 
-    // helper function to test the player's current position and update the field accordingly
-    let testUserInput = (y, x, fieldArray) => {
+    // helper function to check the player's current position and update the game field and/or game status accordingly
+    let checkPlayerPosition = (y, x, fieldArray) => {
       let newElement = fieldArray[y][x];
 
       if (newElement === characters["hat"]) {
@@ -112,7 +112,7 @@ class Field {
         process.exit();
       } else {
         fieldArray[y][x] = characters["player"];
-        this.printField(fieldArray);
+        this.printField(this.field);
         process.stdout.write(messages["legendMessage"]);
         process.stdout.write(messages["instructionsMessage"]);
       }
@@ -130,7 +130,7 @@ class Field {
         process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charXPosition -= 1;
-        testUserInput(this.charYPosition, this.charXPosition, this.field);
+        checkPlayerPosition(this.charYPosition, this.charXPosition, this.field);
       }
     }
 
@@ -140,7 +140,7 @@ class Field {
         process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charXPosition += 1;
-        testUserInput(this.charYPosition, this.charXPosition, this.field);
+        checkPlayerPosition(this.charYPosition, this.charXPosition, this.field);
       }
     }
 
@@ -150,7 +150,7 @@ class Field {
         process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charYPosition -= 1;
-        testUserInput(this.charYPosition, this.charXPosition, this.field);
+        checkPlayerPosition(this.charYPosition, this.charXPosition, this.field);
       }
     }
 
@@ -160,7 +160,7 @@ class Field {
         process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charYPosition += 1;
-        testUserInput(this.charYPosition, this.charXPosition, this.field);
+        checkPlayerPosition(this.charYPosition, this.charXPosition, this.field);
       }
     }
 
