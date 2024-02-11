@@ -11,19 +11,20 @@ let messages = {
   gameOverMessage: `\n\u001b[31mOh nooooo! You fell into a hole! Game Over.\u001b[0m\n`,
   foundHatMessage: `\n\u001b[36mCongratulations! You found your hat! \u001b[0m \n`,
   instructionsMessage: `\nChoose a direction from the following: w = 'up', a = 'left', s = 'down', d = 'right' \n (q = 'quit game')\n\n`,
-  outOfBoundsMessage: `\nOops! Can't move outside the field! Try a different direction\n\n`,
-  legendMessage: `\n${characters["player"]} = player | ${characters["hat"]} = hat | ${characters["hole"]} = hole\n`
-}
+  invalidInputMessage: `\nInvalid input received.\n`,
+  legendMessage: `\n${characters["player"]} = player | ${characters["hat"]} = hat | ${characters["hole"]} = hole\n`,
+  outOfBoundsMessage: `\nOops! Can't move outside the field! Try a different direction\n\n`
+};
 
 class Field {
-  constructor(fieldArray) {
-    this.field = fieldArray;
+  constructor() {
+    this.field = [];
     this.charXPosition = 0;
     this.charYPosition = 0;
   }
   // --------------------------------------------------
   // The generateField method creates a random game field with a specified width and height. It includes a hat, holes, and a starting position.
-  static generateField = (width, height) => {
+  generateField = (width, height) => {
     // helper function to generate a row of characters for the width of the field
     let generateFieldWidth = () => {
       let array = [];
@@ -61,12 +62,15 @@ class Field {
     return fieldArray;
   };
   // --------------------------------------------------
-  // The startGame method initiates the game by printing the initial field and prompting the user to choose a direction.
+  // The startGame method initiates the game by generating and printing the playing field, and prompting the user to choose a direction.
   startGame = () => {
-    process.stdout.write("\n" + "Can you find your hat?" + "\n\n");
+    this.field = this.generateField(10, 10);
+
+    process.stdout.write(`\nCan you find your hat?\n\n`);
     this.printField(this.field);
     process.stdout.write(messages.legendMessage);
     process.stdout.write(messages.instructionsMessage);
+
     this.getUserData();
   };
   // --------------------------------------------------
@@ -91,7 +95,7 @@ class Field {
 
     if (!validInputs[userInput]) {
       this.printField(this.field);
-      process.stdout.write(messages["invalidInput"]);
+      process.stdout.write(messages["invalidInputMessage"]);
       process.stdout.write(messages["instructionsMessage"]);
       return;
     }
@@ -109,8 +113,8 @@ class Field {
       } else {
         fieldArray[y][x] = characters["player"];
         this.printField(fieldArray);
-        process.stdout.write(messages.legendMessage);
-        process.stdout.write(messages.instructionsMessage);
+        process.stdout.write(messages["legendMessage"]);
+        process.stdout.write(messages["instructionsMessage"]);
       }
     };
 
@@ -118,8 +122,8 @@ class Field {
     // note: before we move the player, we first check that the player is moving within the field range
 
     // record the current player before updating it to the new position. This is so that the current player poistion can be marked with a "path character" and the new player position will be marked with a "player character"
-    this.field[this.charYPosition][this.charXPosition] = characters["path"]
-    
+    this.field[this.charYPosition][this.charXPosition] = characters["path"];
+
     // move player position to the left
     if (userInput === "a") {
       if (this.charXPosition <= 0) {
@@ -129,7 +133,7 @@ class Field {
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-    
+
     // move player position to the right
     if (userInput === "d") {
       if (this.charXPosition >= this.field[this.charYPosition].length - 1) {
@@ -139,7 +143,7 @@ class Field {
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-    
+
     // move player position up
     if (userInput === "w") {
       if (this.charYPosition <= 0) {
@@ -159,14 +163,14 @@ class Field {
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-    
+
     // quit game
     if (userInput === "q") {
       console.log("\n" + "OK! See you later!");
       process.exit();
     }
   };
-  
+
   // --------------------------------------------------
   printField = (fieldArray) => {
     console.clear();
@@ -176,8 +180,6 @@ class Field {
   };
 }
 
-let myFieldArray = Field.generateField(10, 10);
-
-let myField = new Field(myFieldArray);
-
-myField.startGame();
+// --------------------------------------------------
+// create an instance of the Field class and initiate the game with the startGame method
+new Field().startGame();
