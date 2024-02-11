@@ -1,6 +1,6 @@
 <div align=center>
 
-<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/284bc90d-8a35-45de-b73a-7de42e7f46b2" width=60%/>
+<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/284bc90d-8a35-45de-b73a-7de42e7f46b2" width=55%/>
 
 # Find Your Hat
 
@@ -29,7 +29,7 @@ This is a simple text-based game using JavaScript and the terminal. The game inv
 
 <div align=center>
 
-![Animation](https://github.com/melissaveraherbst/find-your-hat/assets/84316275/41f6e74a-bb90-49b5-8430-4ccce62860c9)
+<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/41f6e74a-bb90-49b5-8430-4ccce62860c9" width=65% />
   
 </div>
 
