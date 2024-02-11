@@ -1,11 +1,19 @@
 // The characters object defines the characters used in the game, such as the hat, hole, field character, and path character. These characters are styled using ANSI escape codes to add color.
 let characters = {
-  player: "\u001b[33m" + "#" + "\u001b[0m",
+  player: "\u001b[33m" + "$" + "\u001b[0m",
   hat: "\u001b[36m" + "^" + "\u001b[0m",
   hole: "O",
   fieldCharacter: "░",
   path: "\u001b[35m" + "*" + "\u001b[0m",
 };
+
+let messages = {
+  gameOverMessage: `\n\u001b[31mOh nooooo! You fell into a hole! Game Over.\u001b[0m\n`,
+  foundHatMessage: `\n\u001b[36mCongratulations! You found your hat! \u001b[0m \n`,
+  instructionsMessage: `\nChoose a direction from the following: w = 'up', a = 'left', s = 'down', d = 'right' \n (q = 'quit game')\n\n`,
+  outOfBoundsMessage: `\nOops! Can't move outside the field! Try a different direction\n\n`,
+  legendMessage: `\n${characters["player"]} = player | ${characters["hat"]} = hat | ${characters["hole"]} = hole\n`
+}
 
 class Field {
   constructor(fieldArray) {
@@ -49,7 +57,6 @@ class Field {
     let startX = 0;
     let startY = 0;
     fieldArray[startY][startX] = characters["player"];
-    // fieldArray[startY][startX] = characters["path"];
 
     return fieldArray;
   };
@@ -58,9 +65,8 @@ class Field {
   startGame = () => {
     process.stdout.write("\n" + "Can you find your hat?" + "\n\n");
     this.printField(this.field);
-    process.stdout.write(
-      "\n" + "Choose a direction from the following: w = 'up', a = 'left', s = 'down', d = 'right'" + "\n" + "(q = 'quit game')" + "\n"
-    );
+    process.stdout.write(messages.legendMessage);
+    process.stdout.write(messages.instructionsMessage);
     this.getUserData();
   };
   // --------------------------------------------------
@@ -72,7 +78,7 @@ class Field {
     });
   };
   // --------------------------------------------------
-  // The actionUserInput method processes the user's input, updating the current game field or game status.
+  // The actionUserInput method processes the user's input, updating the current game field and/or game status.
   actionUserInput = (userInput) => {
     // Validate user input
     let validInputs = {
@@ -84,8 +90,9 @@ class Field {
     };
 
     if (!validInputs[userInput]) {
-      process.stdout.write("\n" + "Invalid input recieved." + "\n" + "Choose a direction from the following: w = 'up', a = 'left', s = 'down', d = 'right'" + "\n" + "(q = 'quit game')" + "\n"
-      );
+      this.printField(this.field);
+      process.stdout.write(messages["invalidInput"]);
+      process.stdout.write(messages["instructionsMessage"]);
       return;
     }
 
@@ -94,14 +101,16 @@ class Field {
       let newElement = fieldArray[y][x];
 
       if (newElement === characters["hat"]) {
-        process.stdout.write("\n" + "\u001b[36m" + "Congratulations! You found your hat!" + "\u001b[0m" + "\n");
+        process.stdout.write(messages["foundHatMessage"]);
         process.exit();
       } else if (newElement === characters["hole"]) {
-        process.stdout.write("\n" + "\u001b[31m" + "Oh nooooo! You fell into a hole! Game Over." + "\u001b[0m" + "\n");
+        process.stdout.write(messages["gameOverMessage"]);
         process.exit();
       } else {
         fieldArray[y][x] = characters["player"];
         this.printField(fieldArray);
+        process.stdout.write(messages.legendMessage);
+        process.stdout.write(messages.instructionsMessage);
       }
     };
 
@@ -114,33 +123,27 @@ class Field {
     // move player position to the left
     if (userInput === "a") {
       if (this.charXPosition <= 0) {
-        process.stdout.write(
-          "\n" + "Oops! Can't move out of bounds! Try a different direction" + "\n"
-        );
+        process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charXPosition -= 1;
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-
+    
     // move player position to the right
     if (userInput === "d") {
       if (this.charXPosition >= this.field[this.charYPosition].length - 1) {
-        process.stdout.write(
-          "\n" + "Oops! Can't move out of bounds! Try a different direction" + "\n"
-        );
+        process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charXPosition += 1;
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-
+    
     // move player position up
     if (userInput === "w") {
       if (this.charYPosition <= 0) {
-        process.stdout.write(
-          "\n" + "Oops! Can't move out of bounds! Try a different direction" + "\n"
-        );
+        process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charYPosition -= 1;
         testUserInput(this.charYPosition, this.charXPosition, this.field);
@@ -150,27 +153,25 @@ class Field {
     // move player position down
     if (userInput === "s") {
       if (this.charYPosition >= this.field.length - 1) {
-        process.stdout.write(
-          "\n" + "Oops! Can't move out of bounds! Try a different direction" + "\n"
-        );
+        process.stdout.write(messages["outOfBoundsMessage"]);
       } else {
         this.charYPosition += 1;
         testUserInput(this.charYPosition, this.charXPosition, this.field);
       }
     }
-
+    
     // quit game
     if (userInput === "q") {
       console.log("\n" + "OK! See you later!");
       process.exit();
     }
   };
-
+  
   // --------------------------------------------------
   printField = (fieldArray) => {
     console.clear();
     for (let i = 0; i < fieldArray.length; i++) {
-      console.log(fieldArray[i].join(" "));
+      process.stdout.write(fieldArray[i].join(" ") + "\n");
     }
   };
 }
