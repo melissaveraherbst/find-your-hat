@@ -1,6 +1,6 @@
 <div align=center>
 
-<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/50338494-d257-439a-8911-32616e36f07f" width=125 />
+<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/284bc90d-8a35-45de-b73a-7de42e7f46b2" width=60%/>
 
 # Find Your Hat
 
@@ -25,9 +25,14 @@ This is a simple text-based game using JavaScript and the terminal. The game inv
   - Difficulty levels, categorized as Easy, Normal, or Hard, could dynamically adjust the field size and hole quantity based on the chosen difficulty.
 - **Scalability:** Currently, the game field size is fixed at 10x10. it could be made more dynamic by allowing users to set the field size before starting a new game or by adjusting it dynamically based on different difficulty levels.
 
-## Screenshots
+## Demo
 
-...
+<div align=center>
+
+![Animation](https://github.com/melissaveraherbst/find-your-hat/assets/84316275/41f6e74a-bb90-49b5-8430-4ccce62860c9)
+  
+</div>
+
 
 ---
 Made with 🩷 by Melissa V. Herbst
