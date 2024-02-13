@@ -1,6 +1,6 @@
 <div align=center>
 
-<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/284bc90d-8a35-45de-b73a-7de42e7f46b2" width=45%/>
+<img src="https://github.com/melissaveraherbst/find-your-hat/assets/84316275/284bc90d-8a35-45de-b73a-7de42e7f46b2" width=35%/>
 
 # Find Your Hat
 
